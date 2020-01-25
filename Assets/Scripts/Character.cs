@@ -9,7 +9,7 @@ public class Character : Unit {
     public float jumpforce = 18.0F; // Сила прыжка
     public Rigidbody2D playerRigidbody; // Чтобы установить физику прыжка
     public Animator charAnimator; // Для реализации анимации
-    public SpriteRenderer Sprite;
+    public SpriteRenderer sprite;
     
 
     private bool isGrounded = false;
@@ -19,7 +19,7 @@ public class Character : Unit {
     {
         playerRigidbody = GetComponent<Rigidbody2D>();
         charAnimator = GetComponentInChildren<Animator>();
-        Sprite = GetComponentInChildren<SpriteRenderer>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
       
         bullet = Resources.Load<Bullet>("Bullet");
     }
@@ -41,17 +41,21 @@ public class Character : Unit {
         transform.position = Vector3.MoveTowards(transform.position, transform.position + tempvector, speed * Time.deltaTime); //изменение позиции нашего персонажа
         if(tempvector.x < 0)
         {
-            Sprite.flipX = true;
+            sprite.flipX = true;
         }
         else
         {
-            Sprite.flipX = false;
+            sprite.flipX = false;
         }
     }
 
     public override void RecieveDamage()
     {
+
         lives --;
+        playerRigidbody.velocity = Vector3.zero;
+        playerRigidbody.AddForce(transform.up * 10.0F, ForceMode2D.Impulse);
+        playerRigidbody.AddForce(transform.right * (sprite.flipX ? 3.0F : -3.0F), ForceMode2D.Impulse);
 
         Debug.Log(lives);
     }
@@ -74,7 +78,8 @@ public class Character : Unit {
         position.y += 0.8F;
       
         Bullet newBullet = Instantiate(bullet, position, bullet.transform.rotation) as Bullet;
-        newBullet.Direction = newBullet.transform.right * (Sprite.flipX ? -1.0F : 1.0F); 
+        newBullet.Parent = gameObject;
+        newBullet.Direction = newBullet.transform.right * (sprite.flipX ? -1.0F : 1.0F); 
     }
    
 
@@ -100,4 +105,14 @@ public class Character : Unit {
             charAnimator.SetInteger("State", 0);
         }
 	}
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        //Unit unit = collider.gameObject.GetComponent<Unit>();
+        //if(unit)
+        //{
+          //  RecieveDamage();
+        //}
+    }
+
 }

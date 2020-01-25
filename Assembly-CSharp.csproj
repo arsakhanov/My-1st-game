@@ -56,6 +56,8 @@
      <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CamMove.cs" />
      <Compile Include="Assets\Scripts\Character.cs" />
+     <Compile Include="Assets\Scripts\Monster.cs" />
+     <Compile Include="Assets\Scripts\MoveableMonster.cs" />
      <Compile Include="Assets\Scripts\Saw.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />
  <Reference Include="UnityEditor.StandardEvents">
